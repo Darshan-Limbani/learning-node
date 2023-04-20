@@ -3,15 +3,19 @@ const app = express();
 const fs = require('fs');
 const {del} = require("express/lib/application");
 const PORT = 3000;
+
 app.use(express.json());
-// app.get('/', (req, res) => {
-//     res.status(200)
-//         .json({message: 'Hello From the Server', app: 'Natours'});
-// });
-//
-// app.post('/', (req, res) => {
-//     res.send('You can post to this end point');
-// });
+
+app.use((req, res, next) => {
+    console.log("Hello from the Middleware 👋");
+    next();
+});
+
+app.use((req, res, next) => {
+    req.requestTime = new Date().toISOString();
+    next();
+
+});
 
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`));
@@ -20,6 +24,7 @@ const getAllTours = (req, res) => {
     res.status(200).json({
         status: 'success',
         results: tours.length,
+        requestedTime: req.requestTime,
         data: {
             tours
         }
@@ -71,7 +76,6 @@ const deleteTour = (req, res) => {
 
     }
 
-    const tour = tours.find(el => el.id === id);
     res.status(204).json({
         status: "success",
         data: null
