@@ -2,7 +2,11 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const {del} = require("express/lib/application");
+const morgan = require('morgan');
 const PORT = 3000;
+
+
+app.use(morgan('dev'));
 
 app.use(express.json());
 
@@ -14,7 +18,6 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
     req.requestTime = new Date().toISOString();
     next();
-
 });
 
 
