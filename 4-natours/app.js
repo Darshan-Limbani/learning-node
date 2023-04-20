@@ -10,6 +10,9 @@ app.use(morgan('dev'));
 
 app.use(express.json());
 
+const tourRouter = express.Router();
+const userRouter = express.Router();
+
 app.use((req, res, next) => {
     console.log("Hello from the Middleware 👋");
     next();
@@ -128,26 +131,29 @@ const getUser = (req, res) => {
 // app.post('/api/v1/tours', createTour);
 
 // TOURS Routes
-app.route('/api/v1/tours')
+tourRouter.route('/')
     .get(getAllTours)
     .post(createTour);
 
-app.route('/api/v1/tours/:id')
+tourRouter.route('/:id')
     .patch(updateTour)
     .delete(deleteTour)
     .get(getTour);
 
 // USERS Routes
 
-app.route('/api/v1/users')
+userRouter.route('/api/v1/users')
     .get(getAllUsers)
     .post(createUser);
 
-app.route('/api/v1/users/:id')
+userRouter.route('/api/v1/users/:id')
     .patch(updateUser)
     .delete(deleteUser)
     .get(getUser);
 
+
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', userRouter);
 
 app.listen(PORT, (err) => {
     console.log(`App running on the port ${PORT}`);
