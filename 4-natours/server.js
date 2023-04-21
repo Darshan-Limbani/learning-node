@@ -19,12 +19,17 @@ const tourSchema = mongoose.Schema({
         default: 4.5
     },
     price: {
-        type: true,
+        type: Number,
         require: [true, 'A tour must have a price']
     }
 });
 
-const tour = mongoose.model('Tour', tourSchema);
+
+const Tour = mongoose.model('Tour', tourSchema);
+
+const testTour = new Tour({name: "The Park Camper", price: 850});
+
+testTour.save().then(doc => console.log(doc)).catch(err => console.error(err));
 
 
 const app = require('./app');
