@@ -66,30 +66,45 @@ exports.getAllTours = async (req, res) => {
     try {
 
         // BUILD QUERY
-        // 1) Filtering
+        // 1A) Filtering
         const queryObj = {...req.query};
         const excludedFields = ['page', 'sort', 'limit', 'fields'];
         excludedFields.forEach(el => delete queryObj[el]);
 
-        // 2) Advanced filtering
+        // 2B) Advanced filtering
         let queryStr = JSON.stringify(queryObj);
         queryStr = queryStr.replace(/\b(gte|ge|lte|lt)\b/, match => `$${match}`);
-
 
         console.log("queryStr : --->", queryStr);
         console.log("queryObj : --->", queryObj);
         console.log("queryStr : --->", JSON.parse(queryStr));
-        // EXECUTE QUERY
-        const query = Tour.find(JSON.parse(queryStr));
 
+        // EXECUTE QUERY
+        let query = Tour.find(JSON.parse(queryStr));
+
+        // SORT DATA
+        if (req.query.sort) {
+            const sortBy = req.query.sort.split(',').join(' ');
+            query = query.sort(sortBy);
+        } else {
+            query = query.sort('-createdAt');
+        }
+
+        // SELECT ONLY SPECIFIC FIELDS
+        if (req.query.fields) {
+            const fields = req.query.fields.split(',').join(' ');
+            query = query.select(fields);
+        } else {
+            query = query.select('-__v');
+        }
         // const tours = await Tour.find()
         //     .where('duration')
         //     .equals(5)
         //     .where('difficulty')
         //     .equals('easy');
 
-
         const tours = await query;
+        console.log("RESULT : --->", tours);
 
         // const tours = await Tour.find();
 
