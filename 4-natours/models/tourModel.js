@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require("slugify");
 
 const tourSchema = new mongoose.Schema(
     {
@@ -83,9 +84,25 @@ const tourSchema = new mongoose.Schema(
     }
 );
 
-tourSchema.virtual('durationWeek').get(function () {
-    return this.duration / 7;
+tourSchema.pre('save', function (next) {
+    this.slug = slugify(this.name, {lower: true});
+    next();
 });
+
+// tourSchema.pre('save', function (next) {
+//     console.log("Will save the documents... ");
+//     next();
+// });
+//
+// tourSchema.post('save', function (doc, next) {
+//     console.log(doc);
+//     next();
+// });
+//
+// tourSchema.virtual('durationWeek').get(function () {
+//     return this.duration / 7;
+// });
+
 const Tour = mongoose.model('Tour', tourSchema);
 
 module.exports = Tour;

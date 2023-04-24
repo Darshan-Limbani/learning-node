@@ -36,7 +36,6 @@ exports.aliasTopTours = (req, res, next) => {
 };
 
 exports.createTour = async (req, res) => {
-    console.log(req.body);
 
     try {
         const newTour = await Tour.create(req.body);
@@ -120,7 +119,6 @@ exports.getAllTours = async (req, res) => {
 
         const features = new APIFeatures(Tour.find(), req.query).filter().sort().limitFields().paginate();
 
-        console.log("features : ------->", features);
 
         // const tours = await Tour.find()
         //     .where('duration')
@@ -129,8 +127,6 @@ exports.getAllTours = async (req, res) => {
         //     .equals('easy');
 
         const tours = await features.query;
-
-        console.log("tours : ---------------->", tours);
         // const tours = await Tour.find();
 
         res.status(200).json({
