@@ -10,7 +10,7 @@ mongoose.connect(DB).then(() => console.log('---------------------- DB Connectio
 // const testTour = new Tour({name: "The Park Camper", price: 850});
 
 // testTour.save().then(doc => console.log(doc)).catch(err => console.error(err));
-console.log(process.env);
+// console.log(process.env);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
