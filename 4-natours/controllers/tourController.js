@@ -17,7 +17,7 @@ const AppError = require('../utils/appError');
 
     }
     next();
-};*/
+};
 
 
 // exports.checkBody = (req, res, next) => {
@@ -28,7 +28,7 @@ const AppError = require('../utils/appError');
 //         });
 //     }
 //     next();
-// };
+// };*/
 
 
 exports.aliasTopTours = (req, res, next) => {
@@ -64,49 +64,49 @@ exports.getTour = catchAsync(async (req, res, next) => {
 exports.getAllTours = catchAsync(async (req, res, next) => {
 
 
-    // BUILD QUERY
-    // // 1A) Filtering
-    // const queryObj = {...req.query};
-    // const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    // excludedFields.forEach(el => delete queryObj[el]);
-    //
-    // // 2B) Advanced filtering
-    // let queryStr = JSON.stringify(queryObj);
-    // queryStr = queryStr.replace(/\b(gte|ge|lte|lt)\b/, match => `$${match}`);
+    /*    // BUILD QUERY
+        // // 1A) Filtering
+        // const queryObj = {...req.query};
+        // const excludedFields = ['page', 'sort', 'limit', 'fields'];
+        // excludedFields.forEach(el => delete queryObj[el]);
+        //
+        // // 2B) Advanced filtering
+        // let queryStr = JSON.stringify(queryObj);
+        // queryStr = queryStr.replace(/\b(gte|ge|lte|lt)\b/, match => `$${match}`);
 
-    // EXECUTE QUERY
-    // let query = Tour.find(JSON.parse(queryStr));
+        // EXECUTE QUERY
+        // let query = Tour.find(JSON.parse(queryStr));
 
-    // SORT DATA
-    // if (req.query.sort) {
-    //     const sortBy = req.query.sort.split(',').join(' ');
-    //     query = query.sort(sortBy);
-    // } else {
-    //     query = query.sort('-createdAt');
-    // }
+        // SORT DATA
+        // if (req.query.sort) {
+        //     const sortBy = req.query.sort.split(',').join(' ');
+        //     query = query.sort(sortBy);
+        // } else {
+        //     query = query.sort('-createdAt');
+        // }
 
-    // SELECT ONLY SPECIFIC FIELDS
-    // if (req.query.fields) {
-    //     const fields = req.query.fields.split(',').join(' ');
-    //     query = query.select(fields);
-    // } else {
-    //     query = query.select('-__v');
-    // }
+        // SELECT ONLY SPECIFIC FIELDS
+        // if (req.query.fields) {
+        //     const fields = req.query.fields.split(',').join(' ');
+        //     query = query.select(fields);
+        // } else {
+        //     query = query.select('-__v');
+        // }
 
-    // PAGINATION
-    // const page = req.query.page * 1 || 1;
-    // const limit = req.query.limit * 1 || 100;
-    // const skip = (page - 1) * limit;
-    //
-    // query = query.skip(skip).limit(limit);
-    //
-    // if (req.query.page) {
-    //     const numTours = await Tour.countDocuments();
-    //     console.log("numTours : ------>", numTours);
-    //     if (skip > numTours) {
-    //         throw new Error('This page does not exist');
-    //     }
-    // }
+        // PAGINATION
+        // const page = req.query.page * 1 || 1;
+        // const limit = req.query.limit * 1 || 100;
+        // const skip = (page - 1) * limit;
+        //
+        // query = query.skip(skip).limit(limit);
+        //
+        // if (req.query.page) {
+        //     const numTours = await Tour.countDocuments();
+        //     console.log("numTours : ------>", numTours);
+        //     if (skip > numTours) {
+        //         throw new Error('This page does not exist');
+        //     }
+        // }*/
 
     const features = new APIFeatures(Tour.find(), req.query).filter().sort().limitFields().paginate();
 
