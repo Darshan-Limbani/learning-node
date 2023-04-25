@@ -9,7 +9,6 @@ const signToken = id => {
     });
 };
 
-
 exports.signup = catchAsync(async (req, res, next) => {
     const newUser = await User.create({
         name: req.body.name,
@@ -47,9 +46,31 @@ exports.login = catchAsync(async (req, res, next) => {
     }
     const token = signToken(user._id);
 
+//     3) If everything is ok, send token to client
     res.status(200).json({
         status: 'success',
         token
     });
-//     3) If everything is ok, send token to client
+});
+
+exports.protect = catchAsync(async (req, res, next) => {
+    // 1) Getting token and check it's there
+    let token;
+
+    // console.log("HEADERS ------------------>", req.headers);
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+        token = req.headers.authorization.split(' ')[1];
+    }
+    console.log(token);
+
+    if (!token) {
+        return next(new AppError('You are not logged in! Please log in to get access.', 401));
+    }
+
+    // 2) Verification token
+
+    // 3) Check if user still exists
+
+    // 4) Check if user changed password after the token was issued
+    next();
 });
