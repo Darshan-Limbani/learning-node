@@ -18,9 +18,9 @@ router.route('/')
 // .post(tourController.checkBody, tourController.createTour);
 
 router.route('/:id')
+    .get(tourController.getTour)
     .patch(tourController.updateTour)
-    .delete(tourController.deleteTour)
-    .get(tourController.getTour);
+    .delete(authController.protect, authController.restrictTo('admin', 'lead-guide'), tourController.deleteTour);
 
 
 module.exports = router;
