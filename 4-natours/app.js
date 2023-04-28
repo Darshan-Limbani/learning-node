@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const helmet = require("helmet");
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
+const hpp = require('hpp');
 
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
@@ -37,6 +38,17 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
+// Prevent parameter pollution
+app.use(hpp({
+    whitelist: [
+        'duration',
+        'ratingsQuantity',
+        'ratingAverage',
+        'maxGroupSize',
+        'difficulty',
+        'price'
+    ]
+}));
 app.use(express.static(`${__dirname}/public`));
 
 // app.use((req, res, next) => {
