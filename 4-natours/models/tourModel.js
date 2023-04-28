@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require("slugify");
+const User = require('./userModel');
 
 const tourSchema = new mongoose.Schema({
     name: {
@@ -90,7 +91,8 @@ const tourSchema = new mongoose.Schema({
             description: String,
             day: Number
         }
-    ]
+    ],
+    guides: Array
 }, {
     toJSON: {virtuals: true}, toObject: {virtuals: true}
 });
@@ -129,6 +131,13 @@ tourSchema.post(/^find/, function (docs, next) {
 
     console.log(`Query took ${Date.now() - this.start} milliseconds`);
     // console.log(docs);
+    next();
+});
+
+tourSchema.pre('save', async function (next) {
+
+    const guidesPromise = this.guides.map(async (id) => await User.findById(id));
+    this.guides = await Promise.all(guidesPromise);
     next();
 });
 
