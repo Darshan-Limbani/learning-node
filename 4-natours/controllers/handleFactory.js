@@ -133,6 +133,7 @@ exports.getAll = (Model) => catchAsync(async (req, res, next) => {
     //     .where('difficulty')
     //     .equals('easy');
 
+    // const doc = await features.query.explain();
     const doc = await features.query;
 
     // const doc = await Tour.find();
