@@ -16,7 +16,8 @@ const factory = require('./handleFactory');
             users
         }
     });
-});
+});*/
+
 const filterObj = (obj, ...allowedFields) => {
     const newObj = {};
     Object.keys(obj).forEach(el => {
@@ -25,7 +26,11 @@ const filterObj = (obj, ...allowedFields) => {
         }
     });
     return newObj;
-};*/
+};
+exports.getMe = (req, res, next) => {
+    req.params.id = req.user.id;
+    next();
+};
 
 exports.createUser = (req, res) => {
     res.status(500).json({status: 'error', message: 'This route is not yet defined! Please use /signup instead'});
@@ -70,6 +75,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
         data: null
     });
 });
+
 
 exports.getUser = factory.getOne(User);
 exports.getAllUsers = factory.getAll(User);
