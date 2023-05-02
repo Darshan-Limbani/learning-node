@@ -1,6 +1,6 @@
 const Tour = require('./../models/tourModel');
 const catchAsync = require('../utils/catchAsync');
-const factory = require('./handleFactory');
+const factory = require('./handlerFactory');
 const AppError = require('./../utils/appError');
 // const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`));
 

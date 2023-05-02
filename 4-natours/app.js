@@ -13,6 +13,8 @@ const AppError = require('./utils/appError');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const viewRouter = require('./routes/viewRoutes');
+
 const path = require("path");
 
 const app = express();
@@ -37,8 +39,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // Rate limit prevent bruteforce attack : limit request for the same API
 const limiter = rateLimit({
-    max: 100,
-    windowMs: 60 * 60 * 1000
+    max: 100, windowMs: 60 * 60 * 1000
 });
 app.use('/api', limiter);
 
@@ -52,14 +53,7 @@ app.use(xss());
 
 // Prevent parameter pollution
 app.use(hpp({
-    whitelist: [
-        'duration',
-        'ratingsQuantity',
-        'ratingAverage',
-        'maxGroupSize',
-        'difficulty',
-        'price'
-    ]
+    whitelist: ['duration', 'ratingsQuantity', 'ratingAverage', 'maxGroupSize', 'difficulty', 'price']
 }));
 
 // app.use((req, res, next) => {
@@ -79,9 +73,7 @@ app.use((req, res, next) => {
 // app.post('/api/v1/tours', createTour);
 //  3) ROUTES
 
-app.get('/', (req, res) => {
-    res.status(200).render('base');
-});
+app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);

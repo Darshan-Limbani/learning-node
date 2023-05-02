@@ -1,7 +1,7 @@
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const factory = require('./handleFactory');
+const factory = require('./handlerFactory');
 
 /*exports.getAllUsers = catchAsync(async (req, res, next) => {
 

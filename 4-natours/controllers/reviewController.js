@@ -1,6 +1,6 @@
 const Review = require('../models/reviewModel');
 const catchAsync = require('../utils/catchAsync');
-const factory = require('./handleFactory');
+const factory = require('./handlerFactory');
 
 /*exports.getAllReview = catchAsync(async (req, res, next) => {
     let filter = {};
