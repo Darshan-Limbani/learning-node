@@ -13,8 +13,18 @@ const AppError = require('./utils/appError');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const path = require("path");
 
 const app = express();
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.static(path.join(__dirname, 'public')));
+//1)  GLOBAL MIDDLEWARE
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // set security http headers
 app.use(helmet());
@@ -51,7 +61,6 @@ app.use(hpp({
         'price'
     ]
 }));
-app.use(express.static(`${__dirname}/public`));
 
 // app.use((req, res, next) => {
 //     console.log("Hello from the Middleware 👋");
@@ -68,7 +77,11 @@ app.use((req, res, next) => {
 // app.patch('/api/v1/tours/:id', updateTour);
 // app.delete('/api/v1/tours/:id', deleteTour);
 // app.post('/api/v1/tours', createTour);
+//  3) ROUTES
 
+app.get('/', (req, res) => {
+    res.status(200).render('base');
+});
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
