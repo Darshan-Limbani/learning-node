@@ -48,7 +48,6 @@ exports.signup = catchAsync(async (req, res, next) => {
 
 exports.login = catchAsync(async (req, res, next) => {
 
-    console.log("req.body ------------------->", req.body);
     const {email, password} = req.body;
 
 //     1) Check if email and password exist
@@ -66,6 +65,14 @@ exports.login = catchAsync(async (req, res, next) => {
     createSendToken(user, 200, res);
 });
 
+exports.logout = (req, res) => {
+    res.cookie('jwt', 'loggedout', {
+        expires: new Date(Date.now() + 10 * 1000),
+        httpOnly: true
+    });
+    res.status(200).json({status: 'success'});
+};
+
 exports.protect = catchAsync(async (req, res, next) => {
     // 1) Getting token and check it's there
     let token;
@@ -73,6 +80,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     // console.log("HEADERS ------------------>", req.headers);
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
         token = req.headers.authorization.split(' ')[1];
+    } else if (req.cookies.jwt) {
+        token = req.cookies.jwt;
     }
     // console.log(token);
 
@@ -102,7 +111,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 // Only for rendered pages, no errors!
 exports.isLoggedIn = async (req, res, next) => {
-    /*if (req.cookies.jwt) {
+    if (req.cookies.jwt) {
         try {
             // 1) verify token
             const decoded = await promisify(jwt.verify)(
@@ -117,7 +126,7 @@ exports.isLoggedIn = async (req, res, next) => {
             }
 
             // 3) Check if user changed password after the token was issued
-            if (currentUser.changedPasswordAfter(decoded.iat)) {
+            if (currentUser.changePasswordAfter(decoded.iat)) {
                 return next();
             }
 
@@ -127,7 +136,7 @@ exports.isLoggedIn = async (req, res, next) => {
         } catch (err) {
             return next();
         }
-    }*/
+    }
     next();
 };
 
